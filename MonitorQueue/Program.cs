@@ -8,6 +8,7 @@ namespace MonitorQueue
         {
             Console.WriteLine("Hello World!");
             Console.WriteLine("Successfully pushed");
+            
         }
     }
 }
