@@ -1,37 +1,71 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MonitorQueue
 {
     public class QueueClass
     {
         Queue<int> q;
+        static object locker = new object();
+        private readonly int _capacity;
+        
         public QueueClass(int capacity)
         {
-            q = new Queue<int>(capacity);
+            _capacity = capacity;
+            q = new Queue<int>(_capacity);
         }
         
-        public void Enqueue(int element)
+        public void Enqueue(object passedElement)
         {
-            
-            lock (q)
+            var element = (int) passedElement;
+            try
             {
+                Monitor.Enter(locker);
+                
+                if (q.Count >= _capacity)
+                {
+                    Monitor.Wait(locker);
+                }
+                Monitor.Pulse(locker);
                 q.Enqueue(element);
-                System.Threading.Monitor.Pulse(q);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                Monitor.Exit(locker);
             }
         }
 
-        public int Dequeue()
+        public void Dequeue()
         {
-            lock (q)
+            try
             {
+                
                 while (true)
                 {
-                    if (q.Count > 0)
+                    Monitor.Enter(locker);
+                    if (q.Count == 0)
                     {
-                        return q.Dequeue();
+                        Monitor.Wait(locker);
                     }
-                    System.Threading.Monitor.Wait(q);
+                    Monitor.Pulse(locker);
+                    Console.WriteLine(q.Dequeue());
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            finally
+            {
+                Monitor.Exit(locker);
             }
         }
     }
