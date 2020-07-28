@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MonitorQueue
 {
@@ -6,9 +7,16 @@ namespace MonitorQueue
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Successfully pushed");
+            var QC = new QueueClass(10);
             
+            
+
         }
+
+
+
+
+
+
     }
 }
