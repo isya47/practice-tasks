@@ -27,9 +27,12 @@ namespace MonitorQueue
                 {
                     Monitor.Wait(locker);
                 }
-                Monitor.Pulse(locker);
-                q.Enqueue(element);
-
+                else if (q.Count < _capacity)
+                {
+                    Monitor.Pulse(locker);
+                    q.Enqueue(element);
+                }
+                
             }
             catch (Exception e)
             {
@@ -41,12 +44,10 @@ namespace MonitorQueue
                 Monitor.Exit(locker);
             }
         }
-
         public void Dequeue()
         {
             try
             {
-                
                 while (true)
                 {
                     Monitor.Enter(locker);
@@ -54,8 +55,12 @@ namespace MonitorQueue
                     {
                         Monitor.Wait(locker);
                     }
-                    Monitor.Pulse(locker);
-                    Console.WriteLine(q.Dequeue());
+                    else if (q.Count > 0)
+                    {
+                        Monitor.Pulse(locker);
+                        Console.WriteLine(q.Dequeue());
+                    }
+                    
                 }
             }
             catch (Exception e)
@@ -70,4 +75,5 @@ namespace MonitorQueue
         }
     }
     
+
 }
