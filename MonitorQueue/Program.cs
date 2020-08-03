@@ -25,9 +25,15 @@ namespace MonitorQueue
             for (int i = 0; i < 8; i = i + 2)
             {
                 tid[i] = new Thread(new ParameterizedThreadStart(QC.Enqueue));
-                tid[i].Start(rand.Next(0, 10));
+                tid[i].Start(rand.Next(0, 100));
                 tid[i + 1] = new Thread(new ThreadStart(QC.Dequeue));
                 tid[i + 1].Start();
+            }
+
+            while (true)
+            {
+                QC.Enqueue(rand.Next(0,100));
+                
             }
         }
     }

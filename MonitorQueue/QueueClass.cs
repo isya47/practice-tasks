@@ -31,6 +31,7 @@ namespace MonitorQueue
                 {
                     Monitor.Pulse(locker);
                     q.Enqueue(element);
+                    Console.WriteLine($"Enqueued number:{element}");
                 }
                 
             }
@@ -58,7 +59,8 @@ namespace MonitorQueue
                     else if (q.Count > 0)
                     {
                         Monitor.Pulse(locker);
-                        Console.WriteLine(q.Dequeue());
+                        Console.WriteLine($"Dequeued number:{q.Dequeue()}");
+                        Thread.Sleep(1500);
                     }
                     
                 }
