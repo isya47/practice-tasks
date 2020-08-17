@@ -60,7 +60,7 @@ namespace MonitorQueue
                     {
                         Monitor.Pulse(locker);
                         Console.WriteLine($"Dequeued number:{q.Dequeue()}");
-                        Thread.Sleep(1500);
+                        
                     }
                     
                 }
