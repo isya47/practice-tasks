@@ -42,18 +42,17 @@ namespace MonitorQueue
             }*/
 
             //Test3
-
-            //QueueClass QC = new QueueClass(50);
-            //var rand = new Random();
+            
             int N = 5;
             int M = 4;
             Thread[] threadEnqueue = new Thread[N];
             Thread[] threadDequeue = new Thread[M];
-
+            
+            stopWatch.Start();
+            
             for (var i = 0; i < N; i++)
             {
                 threadEnqueue[i] = new Thread(new ThreadStart(AddElement));
-                //threadEnqueue[i].Start(rand.Next(0,50));
                 threadEnqueue[i].Start();
             }
 
@@ -68,7 +67,7 @@ namespace MonitorQueue
         public static void AddElement()
         {
             var rand = new Random();
-            stopWatch.Start();
+            
             while (true)
             {
                 
