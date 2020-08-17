@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using Timer = System.Timers.Timer;
@@ -9,6 +10,8 @@ namespace MonitorQueue
     class Program
     {
         static QueueClass QC = new QueueClass(50);
+        static Stopwatch stopWatch = new Stopwatch();
+        
         static void Main(string[] args)
         {
             
@@ -65,23 +68,23 @@ namespace MonitorQueue
         public static void AddElement()
         {
             var rand = new Random();
-            var iterationCounter = 0;
+            stopWatch.Start();
             while (true)
             {
+                
                 QC.Enqueue(rand.Next(0, 50));
-                iterationCounter++;
-                if (iterationCounter == 100){break;}
+                var timeTaken = stopWatch.ElapsedMilliseconds;
+                if (timeTaken >= 10000){break;}
             }
         }
 
         public static void RemoveElement()
         {
-            var iterationCounter = 0;
             while (true)
             {
                 QC.Dequeue();
-                iterationCounter++;
-                if (iterationCounter == 100){break;}
+                var timeTaken = stopWatch.ElapsedMilliseconds;
+                if (timeTaken >= 10000){break;}
             }
         }
     }
